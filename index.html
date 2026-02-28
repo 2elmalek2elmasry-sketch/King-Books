@@ -3,280 +3,232 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Young Author Library</title>
-
+<title>King Books | The Royal Archive</title>
 <script src="https://cdn.tailwindcss.com"></script>
-
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700;900&family=Inter:wght@400;700&display=swap" rel="stylesheet">
 <style>
-body {
-  transition: 0.4s ease;
-}
-.dark-mode {
-  background: #0f172a;
-  color: white;
-}
-.light-mode {
-  background: #f1f5f9;
-  color: black;
-}
-.book-card {
-  transition: 0.3s ease;
-}
-.book-card:hover {
-  transform: scale(1.05);
-}
-.fade-in {
-  animation: fadeIn 0.8s ease forwards;
-}
-@keyframes fadeIn {
-  from {opacity:0; transform:translateY(20px);}
-  to {opacity:1; transform:translateY(0);}
-}
+    :root {
+        --primary-gold: #ffd700;
+        --royal-black: #0a0a0a;
+        --parchment: #f4e4bc;
+    }
+
+    body {
+        font-family: 'Inter', sans-serif;
+        background-color: var(--royal-black);
+        color: #e5e7eb;
+        /* Prevent selection globally */
+        -webkit-user-select: none;
+        -ms-user-select: none;
+        user-select: none;
+    }
+
+    .royal-font { font-family: 'Cinzel', serif; }
+
+    .gold-gradient-text {
+        background: linear-gradient(135deg, #ffd700, #f8b400, #ffcc33);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+    }
+
+    .book-card {
+        transition: all 0.4s ease;
+        border: 1px solid #2d2d2d;
+        background: #111;
+    }
+
+    .book-card:hover {
+        transform: translateY(-10px);
+        border-color: var(--primary-gold);
+        box-shadow: 0 0 20px rgba(255, 215, 0, 0.2);
+    }
+
+    .premium-button {
+        background: linear-gradient(to right, #ffd700, #b8860b);
+        color: black;
+        font-weight: bold;
+        transition: 0.3s;
+        cursor: pointer;
+    }
+
+    .premium-button:hover {
+        transform: scale(1.05);
+        filter: brightness(1.1);
+    }
+
+    /* Reading Room - Parchment Style */
+    #reading-room {
+        background-color: var(--parchment);
+        background-image: url('https://www.transparenttextures.com/patterns/p6.png');
+        color: #2b1e16;
+        line-height: 1.8;
+        font-family: 'Georgia', serif;
+        box-shadow: inset 0 0 100px rgba(0,0,0,0.1), 0 20px 50px rgba(0,0,0,0.8);
+    }
+
+    .flourish-divider {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin: 40px 0;
+    }
+    .flourish-divider::before, .flourish-divider::after {
+        content: ""; height: 1px; width: 100px; background: var(--primary-gold); margin: 0 15px;
+    }
+
+    .royal-seal {
+        width: 80px; margin: 40px auto; opacity: 0.5; filter: sepia(1);
+    }
+
+    /* Modal Styling */
+    .modal-overlay {
+        position: fixed; inset: 0; background: rgba(0,0,0,0.95);
+        display: none; justify-content: center; align-items: center; z-index: 1000;
+    }
 </style>
 </head>
+<body oncontextmenu="return false;">
 
-<body class="dark-mode font-sans">
-
-<!-- NAVBAR -->
-<nav class="flex justify-between items-center p-5 shadow-lg bg-black bg-opacity-70">
-  <h1 class="text-2xl font-bold text-yellow-400">📚 Young Author</h1>
-  
-  <div class="flex gap-4">
-    <button onclick="toggleMode()" class="bg-gray-600 px-3 py-2 rounded">
-      🌙 Toggle
-    </button>
-    <button onclick="openLogin()" class="bg-yellow-400 text-black px-3 py-2 rounded font-bold">
-      🔐 Login
-    </button>
+<header class="bg-black/90 sticky top-0 z-50 border-b border-yellow-900">
+  <div class="container mx-auto px-4 py-4 flex justify-between items-center">
+    <a href="#" class="text-3xl font-black gold-gradient-text tracking-widest royal-font">KING BOOKS</a>
+    <nav class="hidden md:flex space-x-8 items-center">
+        <a href="#library" class="hover:text-yellow-400">The Library</a>
+        <a href="#contact" class="hover:text-yellow-400">Contact Scribe</a>
+        <div id="user-avatar" class="hidden w-10 h-10 rounded-full bg-yellow-600 flex items-center justify-center font-bold text-black"></div>
+        <button onclick="document.getElementById('pass-modal').style.display='flex'" class="premium-button px-6 py-2 rounded-full text-sm">Royal Access</button>
+    </nav>
   </div>
-</nav>
+</header>
 
-<!-- HERO -->
-<section class="text-center py-20 fade-in">
-  <h2 class="text-5xl font-bold mb-6">Level Up Your Mind 📖</h2>
-  <p class="text-lg opacity-70">Books that build leaders.</p>
+<section class="h-[60vh] flex items-center justify-center text-center bg-[url('https://www.transparenttextures.com/patterns/dark-leather.png')]">
+    <div class="max-w-4xl px-4">
+        <h1 class="text-5xl md:text-7xl font-black gold-gradient-text mb-6 royal-font">THE ROYAL ARCHIVE</h1>
+        <p class="text-xl italic text-gray-400 mb-8">Secure Knowledge for the Worthy.</p>
+        <a href="#library" class="premium-button py-4 px-12 rounded-full text-lg uppercase tracking-widest">Browse Manuscripts</a>
+    </div>
 </section>
 
-<!-- BOOK SECTION -->
-<section class="grid md:grid-cols-3 gap-8 px-8 pb-20">
+<div class="flourish-divider">
+    <i class="fas fa-scroll text-yellow-500 text-2xl"></i>
+</div>
 
-  <!-- BOOK -->
-  <div class="book-card bg-slate-800 p-6 rounded-xl shadow-xl relative fade-in">
-    
-    <span class="absolute top-3 right-3 bg-yellow-400 text-black px-2 py-1 text-xs font-bold rounded">
-      🏆 BEST SELLER
-    </span>
+<section id="library" class="py-20 container mx-auto px-4">
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-10">
+        
+        <div class="book-card p-6 rounded-xl">
+            <img src="https://images.unsplash.com/photo-1543005128-d64e403987d3?w=500" class="w-full h-80 object-cover rounded-lg mb-6 grayscale hover:grayscale-0 transition-all">
+            <h3 class="text-2xl font-bold text-yellow-500 mb-2 royal-font">The Pharaoh's Legacy</h3>
+            <p class="text-gray-500 mb-6">A deep dive into the hidden history of the kings.</p>
+            <button onclick="checkAccess('The Pharaoh\'s Legacy', 'In the golden age of the Nile, there stood a king whose wisdom was carved into the very stars... [Protected Content]')" class="w-full premium-button py-3 rounded-lg">Open Manuscript</button>
+        </div>
 
-    <h3 class="text-2xl font-bold mb-3">The Young King</h3>
-    <p class="mb-4 opacity-70">Price: $9</p>
+        <div class="book-card p-6 rounded-xl">
+            <img src="https://images.unsplash.com/photo-1512820790803-83ca734da794?w=500" class="w-full h-80 object-cover rounded-lg mb-6 grayscale hover:grayscale-0 transition-all">
+            <h3 class="text-2xl font-bold text-yellow-500 mb-2 royal-font">Golden Wisdom</h3>
+            <p class="text-gray-500 mb-6">Proverbs and lessons from the ancient courts.</p>
+            <button onclick="checkAccess('Golden Wisdom', 'True strength is not found in the sword, but in the silence of the soul... [Protected Content]')" class="w-full premium-button py-3 rounded-lg">Open Manuscript</button>
+        </div>
 
-    <button onclick="buyBook()" class="bg-green-500 px-4 py-2 rounded mb-2 w-full">
-      💳 Buy Now
-    </button>
+        <div class="book-card p-6 rounded-xl border-dashed border-yellow-900">
+            <div class="w-full h-80 bg-zinc-800 flex items-center justify-center rounded-lg mb-6">
+                <i class="fas fa-lock text-5xl text-yellow-900"></i>
+            </div>
+            <h3 class="text-2xl font-bold text-gray-600 mb-2 royal-font">Secret Scrolls</h3>
+            <p class="text-gray-700 mb-6">Only for those who hold the Royal Pass.</p>
+            <button onclick="alert('Access Denied. Please enter the Royal Pass code above.')" class="w-full bg-zinc-800 text-gray-500 py-3 rounded-lg cursor-not-allowed">Locked</button>
+        </div>
 
-    <button onclick="openBook()" class="bg-yellow-400 text-black px-4 py-2 rounded w-full">
-      View Book
-    </button>
-
-    <a href="book.pdf" download
-       class="block text-center mt-3 underline text-sm">
-       📥 Download PDF
-    </a>
-
-  </div>
-
+    </div>
 </section>
 
-<!-- BOOK MODAL -->
-<div id="bookModal" class="fixed inset-0 bg-black bg-opacity-80 hidden justify-center items-center p-6">
-  <div class="bg-white text-black max-w-2xl w-full p-6 rounded-xl overflow-y-auto max-h-[80vh] relative">
-    <button onclick="closeBook()" class="absolute top-3 right-4 text-xl">✖</button>
-    <h2 class="text-3xl font-bold mb-4">The Young King</h2>
-    <p>
-      Chapter 1: The Beginning...
-      <br><br>
-      Paste full book content here.
-    </p>
-  </div>
+<div id="pass-modal" class="modal-overlay">
+    <div class="bg-zinc-900 p-8 rounded-2xl border-2 border-yellow-600 text-center max-w-sm w-full">
+        <h2 class="text-2xl font-bold gold-gradient-text mb-4 royal-font">Enter Royal Pass</h2>
+        <input type="password" id="pass-input" placeholder="Enter Secret Code" class="w-full p-3 bg-zinc-800 rounded border border-yellow-900 mb-4 text-center focus:outline-none focus:border-yellow-500">
+        <button onclick="verifyPass()" class="premium-button w-full py-2 rounded">Unlock Archive</button>
+        <button onclick="document.getElementById('pass-modal').style.display='none'" class="text-gray-500 mt-4 block mx-auto text-sm">Close</button>
+    </div>
 </div>
 
-<!-- LOGIN MODAL -->
-<div id="loginModal" class="fixed inset-0 bg-black bg-opacity-80 hidden justify-center items-center">
-  <div class="bg-white text-black p-6 rounded-xl w-80 relative">
-    <button onclick="closeLogin()" class="absolute top-3 right-4">✖</button>
-    <h2 class="text-2xl font-bold mb-4">Member Login</h2>
-    <input id="username" type="text" placeholder="Enter name"
-      class="border w-full p-2 mb-3 rounded">
-    <button onclick="login()" class="bg-yellow-400 w-full py-2 rounded font-bold">
-      Login
-    </button>
-  </div>
-</div>
-
-<!-- Checkout Modal -->
-<div id="checkout-modal" class="modal-overlay">
-<div class="modal-content rounded-2xl p-6 md:p-10 relative">
-<button onclick="closeModal()" class="absolute top-4 right-4 text-gray-400 hover:text-red-500 text-3xl transition-colors"><i class="fas fa-times"></i></button>
-<h2 class="text-3xl font-extrabold gold-gradient-text border-b pb-3 mb-6 border-yellow-800" id="modal-title">Quick Checkout</h2>
-
-<div id="step-1-summary">
-<div class="flex items-center space-x-4 mb-6 p-4 bg-gray-900/50 rounded-lg border border-yellow-900">
-<img id="modal-product-image" src="" alt="Product Image" class="w-20 h-20 object-cover rounded-md">
-<div>
-<p class="text-xl font-bold text-yellow-400" id="modal-product-name"></p>
-<p class="text-2xl font-black text-yellow-500" id="modal-product-price"></p>
-</div>
-</div>
-<div class="mb-6">
-<label for="product-size" class="block text-gray-300 mb-2 font-medium">Select Size (MANDATORY)</label>
-<select id="product-size" class="checkout-input w-full">
-<option value="" disabled selected>Choose size...</option>
-<option value="S">Small (S)</option>
-<option value="M">Medium (M)</option>
-<option value="L">Large (L)</option>
-<option value="XL">Extra Large (XL)</option>
-</select>
-</div>
-<button onclick="nextStep(2)" id="next-to-shipping-btn" class="premium-button w-full py-3 rounded-xl text-xl transition-transform transform hover:scale-[1.02]">Proceed to Shipping <i class="fas fa-truck ml-2"></i></button>
-</div>
-
-<div id="step-2-shipping" style="display:none;">
-<p class="text-lg font-bold text-yellow-400 mb-4">1. Shipping Information</p>
-<form id="checkout-form" onsubmit="return false;">
-<div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
-<input type="text" id="full-name" placeholder="Full Name" required class="checkout-input">
-<input type="tel" id="phone" placeholder="Phone Number" required class="checkout-input" maxlength="11">
-</div>
-<div class="mb-4">
-<input type="text" id="address" placeholder="Shipping Address (Street, City)" required class="checkout-input w-full">
-</div>
-
-<p class="text-lg font-bold text-yellow-400 mb-4 mt-8">2. Payment</p>
-<p class="text-sm text-red-400 mb-4 italic"><i class="fas fa-exclamation-triangle mr-2"></i> You will be redirected to PayPal to complete your payment securely.</p>
-
-<div class="mb-4">
-<input type="text" id="card-number" placeholder="Card Number (XXXX XXXX XXXX XXXX)" required class="checkout-input w-full" maxlength="19">
-</div>
-<div class="grid grid-cols-3 gap-4 mb-6">
-<input type="text" id="expiry" placeholder="MM/YY" required class="checkout-input" maxlength="5">
-<input type="text" id="cvv" placeholder="CVV" required class="checkout-input" maxlength="4">
-<select class="checkout-input" required>
-<option value="" disabled selected>Select Payment Method</option>
-<option value="cod">Cash on Delivery</option>
-<option value="card">Credit/Debit Card</option>
-</select>
-</div>
-
-<button onclick="redirectPayPal()" class="cta-button text-white w-full py-3 rounded-xl text-xl mt-8 transition-transform transform hover:scale-[1.02]">Pay Now <i class="fas fa-dollar-sign ml-2"></i></button>
-<button onclick="nextStep(1)" class="text-gray-400 hover:text-yellow-400 mt-3 text-sm w-full transition-colors"><i class="fas fa-arrow-left mr-1"></i> Back to Order Summary</button>
-</form>
-</div>
-
-<div id="step-3-confirmation" style="display:none;" class="text-center p-8">
-<i class="fas fa-check-circle text-8xl text-green-500 mb-6 animate-pulse"></i>
-<h3 class="text-4xl font-black gold-gradient-text mb-4">Payment Successful!</h3>
-<p class="text-xl text-gray-200 mb-6">Your order has been placed successfully.</p>
-<p class="text-sm text-gray-400 mb-8">You will receive a confirmation from PayPal shortly. Thank you for shopping with The Egyptian King.</p>
-<button onclick="closeModal()" class="premium-button py-3 px-8 rounded-full">Close & Continue Shopping</button>
-</div>
-</div>
+<div id="book-modal" class="fixed inset-0 bg-black/95 z-[2000] hidden overflow-y-auto">
+    <div class="max-w-4xl mx-auto my-10 relative px-4">
+        <button onclick="closeBook()" class="fixed top-5 right-5 text-white text-4xl hover:text-yellow-500 transition-colors">
+            <i class="fas fa-times-circle"></i>
+        </button>
+        
+        <div id="reading-room" class="p-8 md:p-16 rounded-lg min-h-screen">
+            <h1 id="book-title" class="text-3xl md:text-5xl font-black mb-10 border-b-2 border-yellow-900 pb-6 royal-font text-center"></h1>
+            <div id="book-content" class="text-lg md:text-2xl text-justify tracking-wide">
+                </div>
+            <div class="text-center mt-20">
+                <img src="https://cdn-icons-png.flaticon.com/512/591/591635.png" class="royal-seal">
+                <p class="text-xs uppercase tracking-widest text-gray-600 font-sans">King Books Protected Content &copy; 2026</p>
+            </div>
+        </div>
+    </div>
 </div>
 
 <script>
+    const ROYAL_CODE = "KING2026"; // Change this to whatever code you want!
+    let hasAccess = false;
 
-<script>
+    // 1. Password Verification
+    function verifyPass() {
+        const input = document.getElementById('pass-input').value;
+        if(input === ROYAL_CODE) {
+            hasAccess = true;
+            alert("👑 Access Granted. You may now read the Manuscripts.");
+            document.getElementById('pass-modal').style.display = 'none';
+        } else {
+            alert("❌ Invalid Code. The Archive remains closed.");
+        }
+    }
 
-// Dark / Light Mode
-function toggleMode(){
-  document.body.classList.toggle("dark-mode");
-  document.body.classList.toggle("light-mode");
-}
+    // 2. Access Check before Opening
+    function checkAccess(title, content) {
+        if(!hasAccess) {
+            document.getElementById('pass-modal').style.display = 'flex';
+        } else {
+            openBook(title, content);
+        }
+    }
 
-// Book Modal
-function openBook(){
-  document.getElementById("bookModal").classList.remove("hidden");
-  document.getElementById("bookModal").classList.add("flex");
-}
-function closeBook(){
-  document.getElementById("bookModal").classList.add("hidden");
-  document.getElementById("bookModal").classList.remove("flex");
-}
+    // 3. Open Book Function
+    function openBook(title, content) {
+        document.getElementById('book-title').innerText = title;
+        document.getElementById('book-content').innerText = content;
+        document.getElementById('book-modal').classList.remove('hidden');
+        document.body.style.overflow = 'hidden';
+    }
 
-// Login
-function openLogin(){
-  document.getElementById("loginModal").classList.remove("hidden");
-  document.getElementById("loginModal").classList.add("flex");
-}
-function closeLogin(){
-  document.getElementById("loginModal").classList.add("hidden");
-  document.getElementById("loginModal").classList.remove("flex");
-}
-function login(){
-  const name = document.getElementById("username").value;
-  localStorage.setItem("member", name);
-  alert("Welcome " + name + " 👑");
-  closeLogin();
-}
+    function closeBook() {
+        document.getElementById('book-modal').classList.add('hidden');
+        document.body.style.overflow = 'auto';
+    }
 
-/<!-- Checkout Modal -->
-<div id="checkout-modal" class="modal-overlay">
-<div class="modal-content rounded-2xl p-6 md:p-10 relative">
-<button onclick="closeModal()" class="absolute top-4 right-4 text-gray-400 hover:text-red-500 text-3xl transition-colors"><i class="fas fa-times"></i></button>
-<h2 class="text-3xl font-extrabold gold-gradient-text border-b pb-3 mb-6 border-yellow-800" id="modal-title">Quick Checkout</h2>
+    // 4. ANTI-COPY SECURITY LAYER
+    // Disable Right Click
+    document.addEventListener('contextmenu', e => e.preventDefault());
 
-<div id="step-1-summary">
-<div class="flex items-center space-x-4 mb-6 p-4 bg-gray-900/50 rounded-lg border border-yellow-900">
-<img id="modal-product-image" src="" alt="Product Image" class="w-20 h-20 object-cover rounded-md">
-<div>
-<p class="text-xl font-bold text-yellow-400" id="modal-product-name"></p>
-<p class="text-2xl font-black text-yellow-500" id="modal-product-price"></p>
-</div>
-</div>
-<button onclick="nextStep(2)" id="next-to-shipping-btn" class="premium-button w-full py-3 rounded-xl text-xl transition-transform transform hover:scale-[1.02]">Proceed to Shipping <i class="fas fa-truck ml-2"></i></button>
-</div>
+    // Disable Shortcuts (Copy, Print, Save, Source)
+    document.addEventListener('keydown', function(e) {
+        if (e.ctrlKey && (e.key === 'c' || e.key === 'u' || e.key === 's' || e.key === 'p')) {
+            e.preventDefault();
+            alert("The King's Archive is protected.");
+            return false;
+        }
+    });
 
-<div id="step-2-shipping" style="display:none;">
-<p class="text-lg font-bold text-yellow-400 mb-4">1. Shipping Information</p>
-<form id="checkout-form" onsubmit="return false;">
-<div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
-<input type="text" id="full-name" placeholder="Full Name" required class="checkout-input">
-<input type="tel" id="phone" placeholder="Phone Number" required class="checkout-input" maxlength="11">
-</div>
-<div class="mb-4">
-<input type="text" id="address" placeholder="Shipping Address (Street, City)" required class="checkout-input w-full">
-</div>
+    // Disable Dragging text/images
+    document.addEventListener('dragstart', e => e.preventDefault());
+</script>
 
-<p class="text-lg font-bold text-yellow-400 mb-4 mt-8">2. Payment</p>
-<p class="text-sm text-red-400 mb-4 italic"><i class="fas fa-exclamation-triangle mr-2"></i> You will be redirected to PayPal to complete your payment securely.</p>
+<footer class="bg-black py-12 border-t border-yellow-900 text-center">
+    <p class="gold-gradient-text text-xl royal-font mb-2">KING BOOKS</p>
+    <p class="text-gray-600 text-sm">Crafted for the Royal Legacy</p>
+</footer>
 
-<div class="mb-4">
-<input type="text" id="card-number" placeholder="Card Number (XXXX XXXX XXXX XXXX)" required class="checkout-input w-full" maxlength="19">
-</div>
-<div class="grid grid-cols-3 gap-4 mb-6">
-<input type="text" id="expiry" placeholder="MM/YY" required class="checkout-input" maxlength="5">
-<input type="text" id="cvv" placeholder="CVV" required class="checkout-input" maxlength="4">
-<select class="checkout-input" required>
-<option value="" disabled selected>Select Payment Method</option>
-<option value="cod">Cash on Delivery</option>
-<option value="card">Credit/Debit Card</option>
-</select>
-</div>
-
-<button onclick="redirectPayPal()" class="cta-button text-white w-full py-3 rounded-xl text-xl mt-8 transition-transform transform hover:scale-[1.02]">Pay Now <i class="fas fa-dollar-sign ml-2"></i></button>
-<button onclick="nextStep(1)" class="text-gray-400 hover:text-yellow-400 mt-3 text-sm w-full transition-colors"><i class="fas fa-arrow-left mr-1"></i> Back to Order Summary</button>
-</form>
-</div>
-
-<div id="step-3-confirmation" style="display:none;" class="text-center p-8">
-<i class="fas fa-check-circle text-8xl text-green-500 mb-6 animate-pulse"></i>
-<h3 class="text-4xl font-black gold-gradient-text mb-4">Payment Successful!</h3>
-<p class="text-xl text-gray-200 mb-6">Your order has been placed successfully.</p>
-<p class="text-sm text-gray-400 mb-8">You will receive a confirmation from PayPal shortly. Thank you for shopping with The Egyptian King.</p>
-<button onclick="closeModal()" class="premium-button py-3 px-8 rounded-full">Close & Continue Shopping</button>
-</div>
-</div>
-</div>
-
-<script>
 </body>
 </html>
